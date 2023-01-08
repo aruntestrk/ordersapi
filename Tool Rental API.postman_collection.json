@@ -1,0 +1,935 @@
+{
+	"info": {
+		"_postman_id": "0bb4a911-582c-470d-ab40-f56950951529",
+		"name": "Tool Rental API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18288222"
+	},
+	"item": [
+		{
+			"name": "Basic Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Test Welcome mesage\", function () {\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"    console.log(pm.response.code)\r",
+							"    console.log(\"==============\")\r",
+							"    console.log(pm.response.status)\r",
+							"    console.log(\"==============\")\r",
+							"    console.log(pm.response.json())\r",
+							"    var apiResponse = pm.response.json(); \r",
+							"    console.log(apiResponse.message);\r",
+							"console.log(\"The response is:\"+apiResponse.message)\r",
+							"  pm.expect(apiResponse.message).to.include(\"Simple Tool\") \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{baseUrl}}/",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All Tools",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(pm.response.json());\r",
+							"//var actualList =pm.response.json(); \r",
+							"var allowedList = [{\"name\":\"ramya\",\"sex\":\"female\",\"hobbies\":[\"cooking\",\"sleeping\",\"talking about past\",\"wasting time\"]},{\"name\":\"ananya\",\"sex\":\"female\",\"hobbies\":[\"cooking\",\"sleeping\",\"talking about present\",\"utilize time\"]} ];\r",
+							"pm.test(\"Verify the status code\",function(){\r",
+							"   pm.expect(200).to.be.equal(pm.response.code);\r",
+							"})\r",
+							"\r",
+							"var jsonResponse = pm.response.json()\r",
+							"\r",
+							"/*\r",
+							"for(i=0; i< jsonResponse.length;i++) {\r",
+							"    console.log(jsonResponse[i].category)\r",
+							"    console.log(jsonResponse[i].name)\r",
+							"}\r",
+							"*/\r",
+							"jsonResponse.forEach(function(element) {\r",
+							" console.log(element.name)\r",
+							"})\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"baseUrl\",\"simple-tool-rental-api.glitch.me\")"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{baseUrl}}/tools?available=true&category=electric-generators",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"tools"
+					],
+					"query": [
+						{
+							"key": "available",
+							"value": "true"
+						},
+						{
+							"key": "category",
+							"value": "electric-generators"
+						},
+						{
+							"key": "results",
+							"value": "20",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Single tool",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(pm.response.json());\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"var actualList =pm.response.json(); \r",
+							"var allowedList = [\"plumbing\" ];\r",
+							"\r",
+							"  \r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{baseUrl}}/tool/:toolid?user-manual=true",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"tool",
+						":toolid"
+					],
+					"query": [
+						{
+							"key": "user-manual",
+							"value": "true"
+						}
+					],
+					"variable": [
+						{
+							"key": "toolid",
+							"value": "4643"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all orders",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(pm.response.json());\r",
+							"var actualList =pm.response.json(); \r",
+							"var allowedList = [\"plumbing\" ];\r",
+							"pm.test(\"verify the status code\",function(){\r",
+							"    pm.expect(200).to.be.equals(pm.response.code)\r",
+							"    \r",
+							"})\r",
+							"  pm.test(\"verify the status\",function(){\r",
+							"        pm.expect(\"OK\").to.be.equals(pm.response.status)\r",
+							"})\r",
+							"\r",
+							"var jsonResponse =pm.response.json();\r",
+							"\r",
+							"var id = jsonResponse[0].id;\r",
+							"\r",
+							"pm.globals.set(\"orderId\",id);\r",
+							"\r",
+							"console.log(pm.globals.get(\"orderId\"))\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{apiToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{baseUrl}}/orders",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get single order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(pm.response.json());\r",
+							"var actualList =pm.response.json(); \r",
+							"var allowedList = [\"plumbing\" ];\r",
+							"  \r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{apiToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{baseUrl}}/orders/:orderId",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						":orderId"
+					],
+					"variable": [
+						{
+							"key": "orderId",
+							"value": "gKsGDaE6ojcjtiQjUZc2e"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response code\",function(){\r",
+							"    pm.expect(204).equals(pm.response.code)\r",
+							"})\r",
+							"pm.test(\"response body is expected to be empty\",function(){\r",
+							"    pm.expect(pm.response.body).be.equal(undefined)\r",
+							"})\r",
+							"\r",
+							"\r",
+							"console.log(pm.globals.get(\"apiToken\"))\r",
+							"console.log(pm.environment.get(\"baseUrl\"))\r",
+							"\r",
+							"\r",
+							"pm.environment.set(\"baseUrl\",\"google.com\")\r",
+							"\r",
+							"console.log(pm.environment.get(\"baseUrl\"))\r",
+							"\r",
+							"\r",
+							"pm.collectionVariables.set(\"firstName\",\"Aadhavan\")\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{apiToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"customerName\": \"joe {{$randomLastName}}\",\r\n\"comment\":\"Delivery after 7pm\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{baseUrl}}/orders/:orderId",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						":orderId"
+					],
+					"variable": [
+						{
+							"key": "orderId",
+							"value": "5-XM7Mbpor0GR9fBGhtBz"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(pm.response.json());\r",
+							"var actualList =pm.response.json(); \r",
+							"var allowedList = [\"plumbing\" ];\r",
+							"  \r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{apiToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"customerName\": \"Ananya\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{baseUrl}}/orders/:orderId",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						":orderId"
+					],
+					"variable": [
+						{
+							"key": "orderId",
+							"value": "gKsGDaE6ojcjtiQjUZc2e"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retreive token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(pm.response.json());\r",
+							"var actualList =pm.response.json(); \r",
+							"var allowedList = [\"plumbing\" ];\r",
+							"  \r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"clientName\":\"Postman\",\r\n\"clientEmail\":\"aadhava1n@example.com\"} ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{baseUrl}}/api-clients",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api-clients"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register API client",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(pm.response.json());\r",
+							"var actualList =pm.response.json(); \r",
+							"var allowedList = [\"plumbing\" ];\r",
+							"pm.test(\"verify the status code\",function(){\r",
+							"pm.expect(201).to.be.equal(pm.response.code)\r",
+							"}\r",
+							")\r",
+							"  \r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"clientName\":\"Postman\",\r\n\"clientEmail\":\"{{$randomEmail}}\"}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{baseUrl}}/api-clients",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api-clients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(pm.response.json());\r",
+							"var actualList =pm.response.json(); \r",
+							"var allowedList = [\"plumbing\" ];\r",
+							"\r",
+							"pm.test(\"Verify the status code\",function(){\r",
+							"    pm.expect(201).equals(pm.response.code)\r",
+							"})\r",
+							"  \r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{apiToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer zxczczczc",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"toolId\": 1225,\r\n        \"customerName\": \"{{$randomFullName}}\",\r\n        \"comment\": \"Need this tool\"\r\n               \r\n    }\r\n    \r\n    \r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{baseUrl}}/orders",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tools With Some Restricted",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var notAllowedRecommendationList=[\"ladders\",\"plumbing\",\"power-tools\"]\r",
+							"var actualList=pm.response.json();\r",
+							"console.log(pm.response.json()[0].category)\r",
+							"for(i=0;i<actualList.length;i++){\r",
+							"console.log(actualList[i].category);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{baseUrl}}/tools",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"tools"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tools Test Allowed List",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"The response code is :\"+ pm.response.code)\r",
+							"console.log(\"The response status is :\"+ pm.response.status)\r",
+							"//console.log(pm.response.json())\r",
+							"var toolsArray = pm.response.json();\r",
+							"var allowedList=[\"ladders\",\"plumbing\",\"power-tools\"]\r",
+							"for(i=0;i<toolsArray.length;i++){\r",
+							"    var isElementMatches = false; \r",
+							"    for(j=0;j<allowedList.length;j++){\r",
+							"       if(toolsArray[i].category===allowedList[j]){\r",
+							"           console.log(\"Both are equal\")\r",
+							"           isElementMatches=true;\r",
+							"        }// End of if\r",
+							"    }// End of inner loop\r",
+							"\r",
+							"    pm.test(\"Illegal category of products sold\", function(){\r",
+							"        if(isElementMatches === false) {\r",
+							"            console.log(\"The product that is illegal is:\" + toolsArray[i].category)\r",
+							"         }\r",
+							"        pm.expect(isElementMatches).to.be.true\r",
+							"    })\r",
+							"}// End of outer for loop\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{baseUrl}}/tools",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"tools"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify hypen in category",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(pm.response.json()[1].category);\r",
+							"console.log(pm.response.json());\r",
+							"var toolsArray=pm.response.json(); \r",
+							"\r",
+							"var isHyphenPresent=false; \r",
+							"\r",
+							"for(i=0;i<toolsArray.length;i++){\r",
+							"   // console.log(toolsArray[i].category);\r",
+							"    var cat = toolsArray[i].category;\r",
+							"   // console.log(cat.indexOf(\"-\"));\r",
+							"    var index = cat.indexOf(\"-\");\r",
+							"    if(index>-1){\r",
+							"       console.log(cat);\r",
+							"       isHyphenPresent=true;\r",
+							"       console.log(isHyphenPresent);\r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Hyphen not allowed in tools category\",function(){\r",
+							"    pm.expect(isHyphenPresent).equal(false)\r",
+							"})\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{baseUrl}}/tools",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"tools"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Category by Name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(pm.response.json())\r",
+							"\r",
+							"var isALadder=false;\r",
+							"var jsonResponse = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response success\", function(){\r",
+							"   pm.expect(jsonResponse).not.null\r",
+							"   \r",
+							"})\r",
+							"\r",
+							"pm.test(\"Ladders found\", function(){\r",
+							"   pm.expect(jsonResponse.length).greaterThan(0)\r",
+							"})\r",
+							"\r",
+							"for(i=0;i<jsonResponse.length;i++){\r",
+							"    console.log(jsonResponse[i].category);\r",
+							"    if(jsonResponse[i].category === \"ladders\"){\r",
+							"        isALadder= true;\r",
+							"            }\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Verify the presence Of Ladders\",function(){\r",
+							"    pm.expect(isALadder).to.equal(true)\r",
+							"})\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{baseUrl}}/tools?category=ladders&results=-50",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"tools"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "ladders"
+						},
+						{
+							"key": "results",
+							"value": "-50"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Category by Name Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "tools",
+					"host": [
+						"tools"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Category by Name Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(pm.response.json())\r",
+							"\r",
+							"var isALadder=true;\r",
+							"var jsonResponse = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response success\", function(){\r",
+							"   pm.expect(jsonResponse).not.null\r",
+							"   \r",
+							"})\r",
+							"\r",
+							"pm.test(\"Ladders found\", function(){\r",
+							"   pm.expect(jsonResponse.length).greaterThan(0)\r",
+							"})\r",
+							"\r",
+							"for(i=0;i<jsonResponse.length;i++){\r",
+							"    console.log(jsonResponse[i].category);\r",
+							"    if(jsonResponse[i].category !== \"ladders\"){\r",
+							"        isALadder= false;\r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.test(\"Verify All are Ladders\",function(){\r",
+							"    pm.expect(isALadder).to.equal(true)\r",
+							"})\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{baseUrl}}/tools?category=ladders",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"tools"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "ladders"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "firstName",
+			"value": ""
+		}
+	]
+}
